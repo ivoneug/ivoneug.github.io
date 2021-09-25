@@ -1,14 +1,14 @@
 # Site settings
-title:       Pixyll
-email:       your_email@example.com
-author:      John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+title:       Just Developer Blog
+email:       ivoneug@gmail.com
+author:      Evgeniy Ivon
+description: "Nice and short about developing in Swift and SwiftUI"
 baseurl:     ""
-url:         "https://pixyll.com"
+url:         "https://ivon.dev"
 date_format: "%b %-d, %Y"
 header_pages:
- - about.md
- - contact.html
+# - portfolio.md
+ - contacts.md
 
 # Google services
 google_verification:

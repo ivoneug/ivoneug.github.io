@@ -53,5 +53,10 @@
 }
 
 .site-header .site-nav {
-  text-align: center;
+  text-align: right;
+}
+
+.site-header .measure {
+  display: flex;
+  flex-direction: column;
 }
