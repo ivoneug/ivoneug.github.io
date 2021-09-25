@@ -22,6 +22,7 @@ Generally, Combine is simple and consists of 3 concepts:
 * Publishers
 * Subscribers
 * Operators
+
 Let's discuss each one to understand their purpose.
 
 ### Publishers
