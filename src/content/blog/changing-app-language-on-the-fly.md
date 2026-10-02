@@ -1,7 +1,7 @@
 ---
 title: "Changing an iOS App's Language on the Fly"
 description: "Two ways to switch an app's localization from inside the app: the AppleLanguages key with a restart, and a custom SwiftGen lookup function that works without one."
-date: 2026-10-02T21:00:00+03:00
+date: 2023-04-16T10:00:00+03:00
 tags: ["ios", "localization", "swiftgen"]
 ---
 

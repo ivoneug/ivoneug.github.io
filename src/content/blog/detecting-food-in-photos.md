@@ -1,7 +1,7 @@
 ---
 title: "Detecting Food in Photos with Core ML"
 description: "A yes-or-no answer to \"is there food in this photo?\" using Apple's on-device ResNet50 model, a list of food labels and a confidence threshold."
-date: 2026-10-02T21:10:00+03:00
+date: 2023-12-19T10:00:00+03:00
 tags: ["ios", "coreml", "vision"]
 ---
 

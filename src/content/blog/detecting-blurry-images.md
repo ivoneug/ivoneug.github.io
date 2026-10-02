@@ -1,7 +1,7 @@
 ---
 title: "Detecting Blurry Images with the Variance of the Laplacian"
 description: "There is no drop-in library for telling blurry photos from sharp ones. Here is how the variance of the Laplacian works, and a short OpenCV implementation in Swift."
-date: 2026-10-02T21:20:00+03:00
+date: 2023-12-18T10:00:00+03:00
 tags: ["ios", "opencv", "image-processing"]
 ---
 

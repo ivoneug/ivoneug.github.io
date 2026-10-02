@@ -1,11 +1,12 @@
 ---
 title: "CI/CD with Xcode Cloud"
 description: "What Xcode Cloud is, what it expects from your project, and a step-by-step setup on a real app: from the first cloud build to custom ci_scripts."
-date: 2026-10-02T21:30:00+03:00
+date: 2023-04-27T10:00:00+03:00
+updated: 2026-10-02T21:30:00+03:00
 tags: ["xcode", "ci-cd"]
 ---
 
-> I wrote this guide in Russian in spring 2023, so the screenshots show Xcode 14.3. One thing has changed since then: the free tier did not turn into a paid one. 25 compute hours a month are now included with the Apple Developer Program membership.
+> **Update, October 2026:** the screenshots below show Xcode 14.3. One thing has changed since this was written: the free tier did not turn into a paid one. 25 compute hours a month are now included with the Apple Developer Program membership.
 
 [Xcode Cloud](https://developer.apple.com/documentation/xcode/xcode-cloud) is a relatively new service that Apple introduced at WWDC 2021. Think of it as an alternative to Fastlane that is deeply integrated into the Apple ecosystem and Xcode. It is fully cloud-based and runs on Apple's servers.
 
