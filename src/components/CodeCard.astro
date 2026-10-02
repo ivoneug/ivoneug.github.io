@@ -1,0 +1,92 @@
+---
+// The hero "business card", written as Swift and coloured like Xcode's dark theme.
+interface Props {
+	workMode: string;
+}
+
+const { workMode } = Astro.props;
+---
+
+<figure class="code-card" aria-label="Profile written as Swift code">
+	<div class="code-card__bar" aria-hidden="true">
+		<span></span><span></span><span></span>
+		<span class="code-card__file">Evgeniy.swift</span>
+	</div>
+	<pre class="code-card__code"><code><span class="k">struct</span> <span class="t">Evgeniy</span>: <span class="t">Developer</span> {'{'}
+    <span class="k">let</span> platforms: [<span class="t">Platform</span>] = [.iOS, .android]
+    <span class="k">let</span> backend = <span class="t">Firebase</span>(.firestore, .functions, .auth)
+    <span class="k">let</span> workMode = <span class="s">"{workMode}"</span>
+
+    <span class="k">func</span> <span class="f">build</span>(_ idea: <span class="t">AppIdea</span>) <span class="k">async</span> -&gt; <span class="t">Release</span> {'{'}
+        <span class="k">let</span> mvp = <span class="k">await</span> <span class="f">prototype</span>(idea)
+        <span class="k">return await</span> <span class="f">ship</span>(mvp, to: [.appStore, .googlePlay])
+    {'}'}
+{'}'}</code></pre>
+</figure>
+
+<style>
+	.code-card {
+		margin: 0;
+		min-width: 0;
+		border: 1px solid var(--code-border);
+		border-radius: 14px;
+		background: var(--code-bg);
+		color: var(--code-text);
+		overflow: hidden;
+	}
+
+	.code-card__bar {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 16px;
+		border-bottom: 1px solid var(--code-border);
+		background: var(--code-bar);
+	}
+
+	.code-card__bar > span:not(.code-card__file) {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background: #3a3f4c;
+	}
+
+	.code-card__file {
+		margin-left: 12px;
+		color: var(--code-muted);
+		font-family: var(--font-mono);
+		font-size: 13px;
+	}
+
+	.code-card__code {
+		margin: 0;
+		padding: 20px 20px 24px;
+		overflow-x: auto;
+		font-family: var(--font-mono);
+		font-size: 14px;
+		line-height: 1.75;
+	}
+
+	@media (max-width: 40rem) {
+		.code-card__code {
+			padding: 16px;
+			font-size: 12.5px;
+		}
+	}
+
+	.k {
+		color: #fc5fa3;
+	}
+
+	.t {
+		color: #5dd8ff;
+	}
+
+	.s {
+		color: #fc6a5d;
+	}
+
+	.f {
+		color: #67b7a4;
+	}
+</style>

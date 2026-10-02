@@ -1,0 +1,16 @@
+---
+import { SITE } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__inner">
+		<span>© {year} {SITE.name}</span>
+		<span class="site-footer__links">
+			<a href="/feed.xml">rss</a>
+			<span aria-hidden="true">·</span>
+			<a href="/apps-privacy/en/">apps privacy policy</a>
+		</span>
+	</div>
+</footer>

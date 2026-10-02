@@ -1,0 +1,36 @@
+---
+import PostList from '../../components/PostList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArchivePosts, getBlogPosts } from '../../lib/posts';
+
+const posts = await getBlogPosts();
+const archive = await getArchivePosts();
+const years = archive.map((p) => p.data.date.getFullYear());
+---
+
+<BaseLayout title="Blog" description="Notes on Swift, SwiftUI, Android and Firebase.">
+	<section class="container page">
+		<p class="comment">// blog</p>
+		<h1 class="page__title">Notes</h1>
+		<p class="page__lead">Notes on Swift, SwiftUI, Android and Firebase from day-to-day work.</p>
+		<PostList
+			posts={posts.map((p) => ({ href: `/blog/${p.id}/`, title: p.data.title, date: p.data.date, description: p.data.description }))}
+		>
+			{
+				archive.length > 0 && (
+					<li>
+						<a class="post-list__row" href="/archive/">
+							<span class="post-list__date">archive/</span>
+							<span class="post-list__body">
+								<span class="post-list__title">
+									{archive.length} older posts, {Math.min(...years)}–{Math.max(...years)} →
+								</span>
+								<span class="post-list__summary">From my previous blog, mostly in Russian: iOS, Android, macOS and C#.</span>
+							</span>
+						</a>
+					</li>
+				)
+			}
+		</PostList>
+	</section>
+</BaseLayout>

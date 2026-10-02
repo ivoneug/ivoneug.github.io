@@ -1,0 +1,52 @@
+---
+import FormattedDate from '../components/FormattedDate.astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	date?: Date;
+	updated?: Date;
+	tags?: string[];
+	lang?: string;
+	// Set for posts migrated from the old blog.
+	originalUrl?: string;
+	back?: { label: string; href: string };
+}
+
+const { title, description, date, updated, tags = [], lang = 'en', originalUrl } = Astro.props;
+const back = Astro.props.back ?? (originalUrl ? { label: 'archive', href: '/archive/' } : { label: 'blog', href: '/blog/' });
+---
+
+<BaseLayout title={title} description={description} type="article">
+	<article class="container post" lang={lang}>
+		<header class="post__header">
+			<p class="back-link" lang="en"><a href={back.href}>← {back.label}</a></p>
+			<h1 class="post__title">{title}</h1>
+			{
+				date && (
+					<p class="post__meta" lang="en">
+						<FormattedDate date={date} />
+						{updated && (
+							<span>
+								updated <FormattedDate date={updated} />
+							</span>
+						)}
+						{tags.length > 0 && <span>{tags.map((t) => `#${t}`).join(' ')}</span>}
+					</p>
+				)
+			}
+			{
+				originalUrl && (
+					<p class="post__notice" lang="en">
+						{'// '}Archived from my old blog <a href={originalUrl}>bibobo.ru</a> and kept as it was
+						{lang === 'ru' ? ', in Russian' : ''}. Some of the APIs here are outdated.
+					</p>
+				)
+			}
+		</header>
+		<div class="prose">
+			<slot />
+		</div>
+	</article>
+</BaseLayout>

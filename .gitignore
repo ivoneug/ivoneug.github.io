@@ -1,9 +1,18 @@
-_site
-.sass-cache
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS
 .DS_Store
-.jekyll-metadata
-
-# Ignore the config file that's used for gh-pages.
-_config.gh-pages.yml
-
-Gemfile.lock

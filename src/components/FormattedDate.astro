@@ -1,0 +1,11 @@
+---
+interface Props {
+	date: Date;
+}
+
+const { date } = Astro.props;
+// YYYY-MM-DD in the timezone the posts were written in.
+const label = date.toLocaleDateString('sv-SE', { timeZone: 'Europe/Moscow' });
+---
+
+<time datetime={date.toISOString()}>{label}</time>

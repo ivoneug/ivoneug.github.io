@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import CodeCard from '../components/CodeCard.astro';
+import PostList from '../components/PostList.astro';
+import { CONTACT, FEATURED, HERO, PROCESS, PROJECTS, SERVICES } from '../data/landing';
+import { SITE, SOCIAL } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBlogPosts } from '../lib/posts';
+
+const latest = (await getBlogPosts()).slice(0, 3);
+const pad = (n: number) => String(n).padStart(2, '0');
+// Newest year first; Array.sort is stable, so same-year apps keep their order.
+const projects = PROJECTS.toSorted((a, b) => Number(b.year) - Number(a.year));
+// Odd parts are the *highlighted* words.
+const titleParts = HERO.title.split(/\*([^*]+)\*/);
+---
+
+<BaseLayout>
+	<section class="container hero">
+		<div>
+			<p class="comment">{HERO.comment}</p>
+			<h1 class="hero__title">
+				{titleParts.map((part, i) => (i % 2 ? <span class="accent">{part}</span> : part))}
+			</h1>
+			<p class="hero__lead">{HERO.lead}</p>
+			<p class="actions">
+				<a class="button" href="#contact">start a project →</a>
+				<a class="button button--ghost" href="#work">see the work</a>
+			</p>
+		</div>
+		<CodeCard workMode={HERO.workMode} />
+	</section>
+
+	<section id="services" class="band">
+		<div class="container section">
+			<p class="comment">// services</p>
+			<h2 class="section__title">What I build</h2>
+			<ul class="services">
+				{
+					SERVICES.map((s, i) => (
+						<li class="services__item">
+							<h3 class="services__title">
+								<span class="accent">{pad(i + 1)}</span> {s.title}
+							</h3>
+							<div>
+								<p>{s.text}</p>
+								<ul class="chips" aria-label="Stack">
+									{s.stack.map((t) => (
+										<li>{t}</li>
+									))}
+								</ul>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section id="work" class="container section">
+		<p class="comment">// work</p>
+		<h2 class="section__title">Shipped</h2>
+		<article class="featured">
+			<div class="featured__body">
+				<p class="featured__meta">{FEATURED.meta}</p>
+				<h3 class="featured__title">
+					<Image class="app-icon app-icon--large" src={FEATURED.icon} alt="" width={56} height={56} />
+					{FEATURED.title}
+				</h3>
+				<p>{FEATURED.text}</p>
+				<a class="mono-link" href={FEATURED.link.href}>{FEATURED.link.label} →</a>
+			</div>
+			<div class="featured__media">
+				{
+					FEATURED.screenshots.map((s) => (
+						<Image class="featured__shot" src={s.src} alt={s.alt} width={220} widths={[220, 440]} sizes="220px" />
+					))
+				}
+			</div>
+		</article>
+		<table class="projects">
+			<thead>
+				<tr><th scope="col">year</th><th scope="col">project</th><th scope="col">platform</th><th scope="col">about</th></tr>
+			</thead>
+			<tbody>
+				{
+					projects.map((p) => (
+						<tr>
+							<td class="projects__year">{p.year}</td>
+							<td class="projects__title">
+								<a href={p.href}>
+									<Image class="app-icon" src={p.icon} alt="" width={28} height={28} />
+									{p.title}
+								</a>
+							</td>
+							<td>{p.platform}</td>
+							<td class="projects__about">{p.about}</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</section>
+
+	<section id="process" class="container section">
+		<p class="comment">// process</p>
+		<h2 class="section__title">The release pipeline</h2>
+		<ol class="steps">
+			{
+				PROCESS.map((s, i) => (
+					<li class="steps__item">
+						<p class="steps__count">
+							step {i + 1}/{PROCESS.length}
+						</p>
+						<h3 class="steps__title">{s.step}</h3>
+						<p>{s.text}</p>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+
+	<section id="blog" class="container section">
+		<p class="comment">// blog</p>
+		<h2 class="section__title">Notes</h2>
+		<PostList
+			showDescription={false}
+			posts={latest.map((p) => ({ href: `/blog/${p.id}/`, title: p.data.title, date: p.data.date }))}
+		>
+			<li>
+				<a class="post-list__row" href="/archive/">
+					<span class="post-list__date">archive/</span>
+					<span class="post-list__body">
+						<span class="post-list__title">Older posts on iOS, Android and macOS (in Russian) →</span>
+					</span>
+				</a>
+			</li>
+		</PostList>
+	</section>
+
+	<section id="contact" class="ink">
+		<div class="container section contact">
+			<p class="comment">// contact</p>
+			<h2 class="contact__title">{CONTACT.title}</h2>
+			<p class="contact__text">{CONTACT.text}</p>
+			<a class="contact__mail" href={`mailto:${SITE.email}`}>
+				<span class="accent" aria-hidden="true">$</span>
+				<span>open mailto:{SITE.email}</span>
+			</a>
+			<ul class="contact__links">
+				{
+					SOCIAL.map((s) => (
+						<li>
+							<a href={s.href} rel="me noopener">
+								{s.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</BaseLayout>

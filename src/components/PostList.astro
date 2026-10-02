@@ -1,0 +1,43 @@
+---
+import FormattedDate from './FormattedDate.astro';
+
+export interface PostItem {
+	href: string;
+	title: string;
+	date: Date;
+	description?: string;
+	lang?: string;
+}
+
+interface Props {
+	posts: PostItem[];
+	showDescription?: boolean;
+}
+
+const { posts, showDescription = true } = Astro.props;
+---
+
+<ul class="post-list">
+	{
+		posts.map((post) => (
+			<li>
+				<a class="post-list__row" href={post.href}>
+					<span class="post-list__date">
+						<FormattedDate date={post.date} />
+					</span>
+					<span class="post-list__body">
+						<span class="post-list__title" lang={post.lang}>
+							{post.title}
+						</span>
+						{showDescription && post.description && (
+							<span class="post-list__summary" lang={post.lang}>
+								{post.description}
+							</span>
+						)}
+					</span>
+				</a>
+			</li>
+		))
+	}
+	<slot />
+</ul>

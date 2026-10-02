@@ -1,0 +1,33 @@
+---
+import PostList from '../../components/PostList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArchivePosts } from '../../lib/posts';
+
+const posts = await getArchivePosts();
+const years = [...new Set(posts.map((p) => p.data.date.getFullYear()))];
+---
+
+<BaseLayout title="Archive" description="Posts from my previous blog bibobo.ru, kept as they were.">
+	<section class="container page">
+		<p class="back-link"><a href="/blog/">← blog</a></p>
+		<p class="comment">// archive</p>
+		<h1 class="page__title">Archive</h1>
+		<p class="page__lead">
+			Posts from my previous blog, bibobo.ru, kept as they were. Most of them are in Russian and some of the APIs are long
+			outdated, but the ideas still hold up.
+		</p>
+		{
+			years.map((year) => (
+				<section class="archive-year">
+					<h2 class="archive-year__title">{year}</h2>
+					<PostList
+						showDescription={false}
+						posts={posts
+							.filter((p) => p.data.date.getFullYear() === year)
+							.map((p) => ({ href: `/archive/${p.id}/`, title: p.data.title, date: p.data.date, lang: p.data.lang }))}
+					/>
+				</section>
+			))
+		}
+	</section>
+</BaseLayout>

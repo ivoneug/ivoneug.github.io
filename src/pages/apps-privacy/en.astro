@@ -1,0 +1,12 @@
+---
+// URL is referenced from the App Store / Google Play listings — keep it stable.
+import { getEntry, render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+
+const doc = (await getEntry('pages', 'apps-privacy-en'))!;
+const { Content } = await render(doc);
+---
+
+<PostLayout title={doc.data.title} description={doc.data.description} back={{ label: 'home', href: '/' }}>
+	<Content />
+</PostLayout>
