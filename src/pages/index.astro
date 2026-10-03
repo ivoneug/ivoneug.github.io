@@ -143,10 +143,16 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 			<p class="comment">// contact</p>
 			<h2 class="contact__title">{CONTACT.title}</h2>
 			<p class="contact__text">{CONTACT.text}</p>
-			<a class="contact__mail" href={`mailto:${SITE.email}`}>
-				<span class="accent" aria-hidden="true">$</span>
-				<span>open mailto:{SITE.email}</span>
-			</a>
+			<div class="contact__mail-row">
+				<a class="contact__mail" href={`mailto:${SITE.email}`}>
+					<span class="contact__mail-label">email me</span>
+					<span>{SITE.email}</span>
+					<span class="accent" aria-hidden="true">→</span>
+				</a>
+				<button class="contact__copy" type="button" data-copy={SITE.email} hidden>
+					<span aria-live="polite">copy</span>
+				</button>
+			</div>
 			<ul class="contact__links">
 				{
 					SOCIAL.map((s) => (
@@ -161,3 +167,28 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 		</div>
 	</section>
 </BaseLayout>
+
+<script>
+	// The copy button only shows up where the Clipboard API is available.
+	const button = document.querySelector<HTMLButtonElement>('.contact__copy');
+	const label = button?.querySelector('span');
+
+	if (button && label && navigator.clipboard) {
+		let reset: number | undefined;
+		button.hidden = false;
+		button.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(button.dataset.copy ?? '');
+			} catch {
+				return;
+			}
+			label.textContent = 'copied ✓';
+			button.classList.add('is-copied');
+			clearTimeout(reset);
+			reset = window.setTimeout(() => {
+				label.textContent = 'copy';
+				button.classList.remove('is-copied');
+			}, 2000);
+		});
+	}
+</script>
