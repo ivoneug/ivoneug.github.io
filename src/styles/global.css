@@ -522,16 +522,20 @@ h3 {
 	vertical-align: middle;
 }
 
-.projects__title a {
+.projects__title {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.75rem;
 	font-weight: 700;
-	text-decoration: none;
 }
 
-.projects__title a:hover {
+.projects__stores a {
 	color: var(--accent);
+	white-space: nowrap;
+}
+
+.projects__stores a + a {
+	margin-left: 1rem;
 }
 
 .projects__about {

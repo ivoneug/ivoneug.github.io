@@ -87,13 +87,19 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 					projects.map((p) => (
 						<tr>
 							<td class="projects__year">{p.year}</td>
-							<td class="projects__title">
-								<a href={p.href}>
+							<td>
+								<span class="projects__title">
 									<Image class="app-icon" src={p.icon} alt="" width={28} height={28} />
-									{p.title}
-								</a>
+									{p.site ? <a href={p.site}>{p.title}</a> : p.title}
+								</span>
 							</td>
-							<td>{p.platform}</td>
+							<td class="projects__stores">
+								{p.stores.map((s) => (
+									<a href={s.href} aria-label={`${p.title} for ${s.platform}`}>
+										{s.platform} →
+									</a>
+								))}
+							</td>
 							<td class="projects__about">{p.about}</td>
 						</tr>
 					))

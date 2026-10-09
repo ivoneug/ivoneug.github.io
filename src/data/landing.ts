@@ -4,6 +4,7 @@ import clashTheCubeIcon from '../assets/projects/clash-the-cube-icon.png';
 import cluttercutResults from '../assets/projects/cluttercut-01-results.jpg';
 import cluttercutDuplicates from '../assets/projects/cluttercut-03-duplicates.jpg';
 import cluttercutIcon from '../assets/projects/cluttercut-icon.png';
+import langolandIcon from '../assets/projects/langoland-icon.png';
 import luckyDiceIcon from '../assets/projects/lucky-dice-icon.png';
 import quickFlashcardsIcon from '../assets/projects/quick-flashcards-icon.png';
 import shortStoriesIcon from '../assets/projects/short-stories-icon.png';
@@ -53,55 +54,61 @@ export const FEATURED = {
 	],
 };
 
+const appStore = (id: string) => ({ platform: 'iOS', href: `https://apps.apple.com/us/app/${id}` });
+const googlePlay = (pkg: string) => ({ platform: 'Android', href: `https://play.google.com/store/apps/details?id=${pkg}` });
+
 // Shown newest year first (see index.astro); same-year apps keep this order.
+// `stores` lists only the stores where the app is live right now; `site` links the title.
 export const PROJECTS = [
 	{
 		year: '2022',
 		title: 'Lucky Dice 2',
 		icon: luckyDiceIcon,
-		platform: 'iOS',
 		about: 'Relaxing dice game for a quick break',
-		href: 'https://apps.apple.com/us/app/lucky-dice-2/id1606243051',
+		stores: [appStore('lucky-dice-2/id1606243051'), googlePlay('games.greenflag.luckydice')],
 	},
 	{
 		year: '2021',
 		title: 'Quick Flashcards',
 		icon: quickFlashcardsIcon,
-		platform: 'iOS',
 		about: 'Vocabulary trainer built around spaced repetition',
-		href: 'https://apps.apple.com/us/app/quick-flashcards/id1575765696',
+		stores: [appStore('quick-flashcards/id1575765696')],
 	},
 	{
 		year: '2021',
 		title: 'Word Match Searching',
 		icon: wordMatchIcon,
-		platform: 'iOS',
 		about: 'Word search game written in SwiftUI',
-		href: 'https://apps.apple.com/us/app/word-match-searching/id1571894190',
+		stores: [appStore('word-match-searching/id1571894190')],
 	},
 	{
 		year: '2021',
 		title: 'Clash the Cube',
 		icon: clashTheCubeIcon,
-		platform: 'iOS',
 		about: 'Endless merge-the-cubes puzzle',
-		href: 'https://apps.apple.com/us/app/clash-the-cube/id1553756560',
+		stores: [appStore('clash-the-cube/id1553756560')],
+	},
+	{
+		year: '2019',
+		title: 'LangoLand',
+		icon: langolandIcon,
+		about: 'English words with pictures and audio, for Russian speakers',
+		site: 'https://langoland.ru/',
+		stores: [appStore('langoland/id1453318711')],
 	},
 	{
 		year: '2018',
 		title: 'Trivia Quiz',
 		icon: triviaQuizIcon,
-		platform: 'Android',
-		about: '3,500+ questions in 24 fields of study',
-		href: 'https://play.google.com/store/apps/details?id=ru.bibobo.trivia_quiz_app',
+		about: '5,000+ questions in 24 fields of study',
+		stores: [googlePlay('ru.bibobo.trivia_quiz_app')],
 	},
 	{
 		year: '2018',
 		title: '160 Great Short Stories',
 		icon: shortStoriesIcon,
-		platform: 'Android',
 		about: 'Reader for classic short stories in English',
-		href: 'https://play.google.com/store/apps/details?id=ru.bibobo.great_short_stories',
+		stores: [googlePlay('ru.bibobo.great_short_stories')],
 	},
 ];
 
