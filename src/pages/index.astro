@@ -68,7 +68,7 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 					{FEATURED.title}
 				</h3>
 				<p>{FEATURED.text}</p>
-				<a class="mono-link" href={FEATURED.link.href}>{FEATURED.link.label} →</a>
+				<a class="mono-link" href={FEATURED.link.href} target="_blank" rel="noopener">{FEATURED.link.label} →</a>
 			</div>
 			<div class="featured__media">
 				{
@@ -90,12 +90,18 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 							<td>
 								<span class="projects__title">
 									<Image class="app-icon" src={p.icon} alt="" width={28} height={28} />
-									{p.site ? <a href={p.site}>{p.title}</a> : p.title}
+									{p.site ? (
+										<a href={p.site} target="_blank" rel="noopener">
+											{p.title}
+										</a>
+									) : (
+										p.title
+									)}
 								</span>
 							</td>
 							<td class="projects__stores">
 								{p.stores.map((s) => (
-									<a href={s.href} aria-label={`${p.title} for ${s.platform}`}>
+									<a href={s.href} target="_blank" rel="noopener" aria-label={`${p.title} for ${s.platform}`}>
 										{s.platform} →
 									</a>
 								))}
@@ -163,7 +169,7 @@ const titleParts = HERO.title.split(/\*([^*]+)\*/);
 				{
 					SOCIAL.map((s) => (
 						<li>
-							<a href={s.href} rel="me noopener">
+							<a href={s.href} target="_blank" rel="me noopener">
 								{s.label}
 							</a>
 						</li>
