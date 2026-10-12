@@ -72,7 +72,7 @@ export const PROJECTS = [
 		title: 'Quick Flashcards',
 		icon: quickFlashcardsIcon,
 		about: 'Vocabulary trainer built around spaced repetition',
-		stores: [appStore('quick-flashcards/id1575765696')],
+		stores: [appStore('quick-flashcards/id1575765696'), googlePlay('ru.bibobo.Flashcards')],
 	},
 	{
 		year: '2021',
@@ -94,7 +94,7 @@ export const PROJECTS = [
 		icon: langolandIcon,
 		about: 'English words with pictures and audio, for Russian speakers',
 		site: 'https://langoland.ru/',
-		stores: [appStore('langoland/id1453318711')],
+		stores: [appStore('langoland/id1453318711'), googlePlay('ru.bibobo.childish_english')],
 	},
 	{
 		year: '2018',
