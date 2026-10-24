@@ -101,7 +101,7 @@ export const PROJECTS = [
 		title: 'Trivia Quiz',
 		icon: triviaQuizIcon,
 		about: '5,000+ questions in 24 fields of study',
-		stores: [googlePlay('ru.bibobo.trivia_quiz_app')],
+		stores: [appStore('trivia-quiz-classic/id1389472639'), googlePlay('ru.bibobo.trivia_quiz_app')],
 	},
 	{
 		year: '2018',
