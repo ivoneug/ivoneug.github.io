@@ -535,7 +535,19 @@
 	color: var(--ink-text);
 }
 
+.pilot-install .button--ghost {
+	border-color: var(--ink-border);
+	background: transparent;
+	color: var(--ink-text);
+}
+
+.pilot-install .button--ghost:hover {
+	border-color: var(--ink-muted);
+	color: var(--ink-text);
+}
+
 .pilot-install__code {
+	margin-top: 0.75rem;
 	border: 1px solid var(--ink-border);
 	border-radius: 12px;
 	background: var(--ink-raised);

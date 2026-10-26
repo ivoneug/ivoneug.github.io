@@ -68,7 +68,7 @@ export const PROJECTS = [
 		icon: xcodePilotIcon,
 		about: 'macOS menu bar app that builds and runs Xcode projects without Xcode',
 		site: 'https://pilot.ivon.dev/',
-		stores: [{ platform: 'macOS', href: PILOT.repo }],
+		stores: [{ platform: 'macOS', href: PILOT.latestRelease }],
 	},
 	{
 		year: '2022',

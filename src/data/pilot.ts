@@ -5,6 +5,9 @@ export const PILOT = {
 	name: 'Xcode Pilot',
 	repo: 'https://github.com/ivoneug/xcode-pilot',
 	license: 'https://github.com/ivoneug/xcode-pilot/blob/main/LICENSE',
+	// The release asset keeps this name in every release (see Scripts/release.sh in the app's repository)
+	download: 'https://github.com/ivoneug/xcode-pilot/releases/latest/download/XcodePilot.dmg',
+	latestRelease: 'https://github.com/ivoneug/xcode-pilot/releases/latest',
 	shortUrl: 'pilot.ivon.dev',
 };
 
@@ -64,7 +67,16 @@ export interface PilotCopy {
 	shortcuts: { comment: string; title: string; global: string; panel: string; actions: Record<ShortcutAction, string> };
 	hood: { comment: string; title: string; text: string; permissionsTitle: string; permissions: string[] };
 	limits: { comment: string; title: string; items: string[] };
-	install: { comment: string; title: string; text: string; note: string; primary: string; codeComments: string[] };
+	install: {
+		comment: string;
+		title: string;
+		text: string;
+		download: string;
+		source: string;
+		fromSource: string;
+		note: string;
+		codeComments: string[];
+	};
 	footer: { license: string; source: string; author: string };
 }
 
@@ -83,8 +95,8 @@ export const PILOT_COPY: Record<PilotLang, PilotCopy> = {
 			comment: '// macOS menu bar app · free & open source',
 			title: 'Build and run Xcode projects *from the menu bar*.',
 			lead: 'Xcode Pilot drives `xcodebuild`, `simctl` and `devicectl` for you. Pick a scheme and a device, press ⌃⌥⌘R in any app, and read errors and `print` output right in the panel. Xcode.app can stay closed.',
-			primary: 'view on GitHub →',
-			secondary: 'take the tour',
+			primary: 'download for macOS ↓',
+			secondary: 'source on GitHub',
 			facts: ['macOS 14+', 'Xcode 26', 'MIT license'],
 		},
 		demo: {
@@ -193,9 +205,11 @@ export const PILOT_COPY: Record<PilotLang, PilotCopy> = {
 		install: {
 			comment: '// install',
 			title: 'Free and open source',
-			text: 'There is no prebuilt download yet: Xcode Pilot builds from source with Xcode 26. It is released under the MIT license.',
+			text: 'Download the notarized DMG, drag Xcode Pilot to Applications and open it: it lives in the menu bar. It is released under the MIT license.',
+			download: 'download the DMG ↓',
+			source: 'source on GitHub →',
+			fromSource: '// or build it from source with Xcode 26',
 			note: 'Set your team in `Scripts/project.env` (`DEVELOPMENT_TEAM_ID`) and run the `XcodePilot` scheme. Signing with your team keeps macOS from resetting the Accessibility permission after every rebuild.',
-			primary: 'view on GitHub →',
 			codeComments: ['# project generators and the linter', '# generates XcodePilot.xcodeproj'],
 		},
 		footer: { license: 'MIT license', source: 'source on GitHub', author: 'made by' },
@@ -214,8 +228,8 @@ export const PILOT_COPY: Record<PilotLang, PilotCopy> = {
 			comment: '// приложение для строки меню macOS · open source',
 			title: 'Собирайте и запускайте Xcode-проекты *из строки меню*.',
 			lead: 'Xcode Pilot сам вызывает `xcodebuild`, `simctl` и `devicectl`. Выберите схему и устройство, нажмите ⌃⌥⌘R в любом приложении — ошибки и вывод `print` появятся прямо в панели. Xcode.app при этом может быть закрыт.',
-			primary: 'исходники на GitHub →',
-			secondary: 'как это выглядит',
+			primary: 'скачать для macOS ↓',
+			secondary: 'исходники на GitHub',
 			facts: ['macOS 14+', 'Xcode 26', 'лицензия MIT'],
 		},
 		demo: {
@@ -331,9 +345,11 @@ export const PILOT_COPY: Record<PilotLang, PilotCopy> = {
 		install: {
 			comment: '// установка',
 			title: 'Бесплатно и с открытым кодом',
-			text: 'Готовой сборки пока нет: Xcode Pilot собирается из исходников в Xcode 26. Распространяется по лицензии MIT.',
+			text: 'Скачайте нотаризованный DMG, перетащите Xcode Pilot в «Программы» и запустите: он живёт в строке меню. Распространяется по лицензии MIT.',
+			download: 'скачать DMG ↓',
+			source: 'исходники на GitHub →',
+			fromSource: '// или соберите из исходников в Xcode 26',
 			note: 'Укажите свою команду в `Scripts/project.env` (`DEVELOPMENT_TEAM_ID`) и запустите схему `XcodePilot`. Подпись своей командой нужна, чтобы macOS не сбрасывала разрешение на универсальный доступ после каждой пересборки.',
-			primary: 'открыть на GitHub →',
 			codeComments: ['# генераторы проекта и линтер', '# создаёт XcodePilot.xcodeproj'],
 		},
 		footer: { license: 'лицензия MIT', source: 'исходники на GitHub', author: 'автор —' },

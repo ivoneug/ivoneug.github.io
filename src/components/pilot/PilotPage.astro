@@ -32,8 +32,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 			<h1 class="hero__title"><Rich text={hero.title} /></h1>
 			<p class="hero__lead"><Rich text={hero.lead} /></p>
 			<p class="actions">
-				<a class="button" href={PILOT.repo} target="_blank" rel="noopener">{hero.primary}</a>
-				<a class="button button--ghost" href="#tour">{hero.secondary}</a>
+				<a class="button" href={PILOT.download}>{hero.primary}</a>
+				<a class="button button--ghost" href={PILOT.repo} target="_blank" rel="noopener">{hero.secondary}</a>
 			</p>
 			<ul class="chips pilot-facts">
 				{hero.facts.map((fact) => <li>{fact}</li>)}
@@ -209,10 +209,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 				<h2 class="contact__title">{install.title}</h2>
 				<p class="contact__text"><Rich text={install.text} /></p>
 				<p class="actions">
-					<a class="button" href={PILOT.repo} target="_blank" rel="noopener">{install.primary}</a>
+					<a class="button" href={PILOT.download}>{install.download}</a>
+					<a class="button button--ghost" href={PILOT.repo} target="_blank" rel="noopener">{install.source}</a>
 				</p>
 			</div>
 			<div>
+				<p class="comment">{install.fromSource}</p>
 				<pre class="pilot-install__code"><code><span class="m">{install.codeComments[0]}</span>
 brew install xcodegen swiftgen swiftlint
 git clone {PILOT.repo}.git
