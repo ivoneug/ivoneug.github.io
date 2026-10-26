@@ -1,0 +1,21 @@
+---
+// Renders landing copy: *asterisks* become accent spans, `backticks` become inline code.
+interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+const parts = text.split(/(\*[^*]+\*|`[^`]+`)/).filter(Boolean);
+---
+
+{
+	parts.map((part) =>
+		part.startsWith('*') ? (
+			<span class="accent">{part.slice(1, -1)}</span>
+		) : part.startsWith('`') ? (
+			<code>{part.slice(1, -1)}</code>
+		) : (
+			part
+		),
+	)
+}

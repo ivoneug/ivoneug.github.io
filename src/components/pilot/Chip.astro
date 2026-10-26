@@ -1,0 +1,17 @@
+---
+// A piece of the menu bar with the app's icon and the title it shows next to it (build time, error count).
+import { PILOT_STATE_TITLES, type PilotState } from '../../data/pilot';
+import StatusIcon from './StatusIcon.astro';
+
+interface Props {
+	state: PilotState;
+}
+
+const { state } = Astro.props;
+const title = PILOT_STATE_TITLES[state];
+---
+
+<span class="pilot-chip" aria-hidden="true">
+	<StatusIcon state={state} />
+	{title.text && <span class:list={['pilot-chip__title', { 'pilot-chip__title--alert': title.alert }]}>{title.text}</span>}
+</span>

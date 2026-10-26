@@ -1,0 +1,89 @@
+---
+// Hero picture: a menu bar with the app's icon and its panel hanging under it. The icon walks through
+// a build → fail → build → succeed → run loop and the panel switches to the matching tab.
+import { PILOT_SHOTS, PILOT_STATES, type PilotLang } from '../../data/pilot';
+import Shot from './Shot.astro';
+import StatusIcon from './StatusIcon.astro';
+
+interface Props {
+	lang: PilotLang;
+	alt: string;
+	menus: string[];
+	clock: string;
+}
+
+const { lang, alt, menus, clock } = Astro.props;
+const [app, ...items] = menus;
+---
+
+<figure class="pilot-demo" data-state="failed" data-shot="issues">
+	<div class="pilot-demo__bar" aria-hidden="true">
+		<span class="pilot-demo__menus"><b>{app}</b>{items.map((item) => <span>{item}</span>)}</span>
+		<span class="pilot-demo__item">
+			{PILOT_STATES.map((state) => <StatusIcon state={state} class={`pilot-demo__icon pilot-demo__icon--${state}`} />)}
+			<span class="pilot-demo__title">2</span>
+		</span>
+		<span class="pilot-demo__extras">
+			<svg viewBox="0 0 20 14" width="17" height="12"
+				><path
+					d="M10 12.6 7.6 10.2a3.4 3.4 0 0 1 4.8 0L10 12.6Zm-4.4-4.4L4 6.6a8.5 8.5 0 0 1 12 0l-1.6 1.6a6.2 6.2 0 0 0-8.8 0ZM1.9 4.5.3 2.9a13.7 13.7 0 0 1 19.4 0l-1.6 1.6a11.4 11.4 0 0 0-16.2 0Z"
+				></path></svg
+			>
+			<svg viewBox="0 0 26 12" width="24" height="11"
+				><rect x="0.6" y="0.6" width="21.8" height="10.8" rx="3.2" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.2"
+				></rect><rect x="2.2" y="2.2" width="15" height="7.6" rx="1.8"></rect><path d="M23.8 4.2a2 2 0 0 1 0 3.6Z" fill-opacity="0.45"></path></svg
+			>
+			<span>{clock}</span>
+		</span>
+	</div>
+	<div class="pilot-demo__panel">
+		{
+			PILOT_SHOTS.map((shot, i) => (
+				<Shot
+					shot={shot}
+					lang={lang}
+					alt={i === 0 ? alt : ''}
+					sizes="(min-width: 64rem) 36rem, calc(100vw - 2rem)"
+					class={`pilot-demo__shot pilot-demo__shot--${shot}`}
+					loading="eager"
+				/>
+			))
+		}
+	</div>
+</figure>
+
+<script>
+	// The first step matches the server-rendered state, so without JS (or with reduced motion) the demo just sits there.
+	type Step = { state: string; title: string; ms: number; shot?: string };
+
+	// The panel keeps showing the previous result while the next build runs, like the app does.
+	const building = (): Step[] => ['0:00', '0:01', '0:02'].map((title) => ({ state: 'building', title, ms: 800 }));
+	const steps: Step[] = [
+		{ state: 'failed', title: '2', ms: 4500, shot: 'issues' },
+		...building(),
+		{ state: 'succeeded', title: '', ms: 3500, shot: 'log' },
+		{ state: 'running', title: '', ms: 4500, shot: 'console' },
+		...building(),
+	];
+
+	const demo = document.querySelector<HTMLElement>('.pilot-demo');
+	const title = demo?.querySelector('.pilot-demo__title');
+
+	if (demo && title && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		let index = 0;
+		const next = () => {
+			// Hold still in a background tab instead of racing through the loop when it comes back.
+			if (!document.hidden) {
+				index = (index + 1) % steps.length;
+				const step = steps[index];
+				demo.dataset.state = step.state;
+				title.textContent = step.title;
+				if (step.shot) {
+					demo.dataset.shot = step.shot;
+				}
+			}
+			window.setTimeout(next, steps[index].ms);
+		};
+		window.setTimeout(next, steps[0].ms);
+	}
+</script>

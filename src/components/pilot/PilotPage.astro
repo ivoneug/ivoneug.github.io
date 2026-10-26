@@ -1,0 +1,226 @@
+---
+// The whole Xcode Pilot landing in one language; /pilot/ and /pilot/ru/ only pick the language.
+import {
+	PILOT,
+	PILOT_COPY,
+	PILOT_SHORTCUTS,
+	PILOT_SHOT_STATES,
+	PILOT_SHOTS,
+	PILOT_STATES,
+	type PilotLang,
+} from '../../data/pilot';
+import PilotLayout from '../../layouts/PilotLayout.astro';
+import MenuBarDemo from './MenuBarDemo.astro';
+import Rich from './Rich.astro';
+import Shot from './Shot.astro';
+import Chip from './Chip.astro';
+
+interface Props {
+	lang: PilotLang;
+}
+
+const { lang } = Astro.props;
+const copy = PILOT_COPY[lang];
+const { hero, demo, tour, states, features, shortcuts, hood, limits, install } = copy;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<PilotLayout lang={lang}>
+	<section class="container hero pilot-hero">
+		<div>
+			<p class="comment">{hero.comment}</p>
+			<h1 class="hero__title"><Rich text={hero.title} /></h1>
+			<p class="hero__lead"><Rich text={hero.lead} /></p>
+			<p class="actions">
+				<a class="button" href={PILOT.repo} target="_blank" rel="noopener">{hero.primary}</a>
+				<a class="button button--ghost" href="#tour">{hero.secondary}</a>
+			</p>
+			<ul class="chips pilot-facts">
+				{hero.facts.map((fact) => <li>{fact}</li>)}
+			</ul>
+		</div>
+		<MenuBarDemo lang={lang} alt={demo.alt} menus={demo.menus} clock={demo.clock} />
+	</section>
+
+	<section id="tour" class="band">
+		<div class="container section">
+			<p class="comment">{tour.comment}</p>
+			<h2 class="section__title">{tour.title}</h2>
+			<div class="pilot-tour">
+				{
+					PILOT_SHOTS.map((shot, i) => (
+						<input
+							class="pilot-tour__radio"
+							type="radio"
+							name="pilot-tour"
+							id={`pilot-tour-${shot}`}
+							value={shot}
+							checked={i === 0}
+						/>
+					))
+				}
+				<div class="pilot-tour__tabs" role="presentation">
+					{PILOT_SHOTS.map((shot) => <label for={`pilot-tour-${shot}`}>{tour.items[shot].tab}</label>)}
+				</div>
+				<div class="pilot-tour__panes">
+					{
+						PILOT_SHOTS.map((shot, i) => (
+							<div class={`pilot-tour__pane pilot-tour__pane--${shot}`}>
+								<div class="pilot-tour__text">
+									<p class="steps__count">
+										{pad(i + 1)}/{pad(PILOT_SHOTS.length)}
+									</p>
+									<h3 class="pilot-tour__title">{tour.items[shot].title}</h3>
+									<p>
+										<Rich text={tour.items[shot].text} />
+									</p>
+								</div>
+								<figure class="pilot-tour__figure">
+									<Chip state={PILOT_SHOT_STATES[shot]} />
+									<Shot
+										shot={shot}
+										lang={lang}
+										alt={tour.items[shot].alt}
+										sizes="(min-width: 64rem) 38rem, calc(100vw - 2rem)"
+										class="pilot-tour__shot"
+									/>
+								</figure>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="menu-bar" class="container section">
+		<p class="comment">{states.comment}</p>
+		<h2 class="section__title">{states.title}</h2>
+		<ul class="pilot-states">
+			{
+				PILOT_STATES.map((state) => (
+					<li class="pilot-states__item">
+						<Chip state={state} />
+						<h3 class="steps__title">{states.items[state].name}</h3>
+						<p>{states.items[state].text}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="features" class="container section">
+		<p class="comment">{features.comment}</p>
+		<h2 class="section__title">{features.title}</h2>
+		<ul class="services">
+			{
+				features.items.map((item, i) => (
+					<li class="services__item">
+						<h3 class="services__title">
+							<span class="accent">{pad(i + 1)}</span> {item.title}
+						</h3>
+						<p>
+							<Rich text={item.text} />
+						</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="shortcuts" class="band">
+		<div class="container section">
+			<p class="comment">{shortcuts.comment}</p>
+			<h2 class="section__title">{shortcuts.title}</h2>
+			<div class="pilot-keys">
+				{
+					(['global', 'panel'] as const).map((group) => (
+						<div>
+							<h3 class="pilot-keys__group">{shortcuts[group]}</h3>
+							<ul class="pilot-keys__list">
+								{PILOT_SHORTCUTS[group].map((shortcut) => (
+									<li>
+										<span class="pilot-keys__combo">
+											{shortcut.keys.map((key) => (
+												<kbd>{key}</kbd>
+											))}
+										</span>
+										<span>{shortcuts.actions[shortcut.action]}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section id="under-the-hood" class="container section pilot-hood">
+		<div>
+			<p class="comment">{hood.comment}</p>
+			<h2 class="section__title">{hood.title}</h2>
+			<p class="pilot-hood__text">{hood.text}</p>
+			<h3 class="pilot-hood__subtitle">{hood.permissionsTitle}</h3>
+			<ul class="pilot-list">
+				{
+					hood.permissions.map((item) => (
+						<li>
+							<Rich text={item} />
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<figure class="pilot-term" aria-label="xcodebuild, xcresulttool and simctl commands">
+			<div class="pilot-term__bar" aria-hidden="true">
+				<span></span><span></span><span></span>
+				<span class="pilot-term__file">zsh — Forecast</span>
+			</div>
+			<pre class="pilot-term__code"><code><span class="p">$</span> <span class="c">xcodebuild</span> build -project Forecast.xcodeproj -scheme Forecast <span class="m">\</span>
+    -destination id=4F2A…C91E -resultBundlePath Build.xcresult
+<span class="m">** BUILD SUCCEEDED **</span>
+<span class="p">$</span> <span class="c">xcrun xcresulttool</span> get build-results --path Build.xcresult --compact
+<span class="p">$</span> <span class="c">xcrun simctl</span> install 4F2A…C91E Forecast.app
+<span class="p">$</span> <span class="c">xcrun simctl</span> launch --console-pty 4F2A…C91E dev.example.Forecast
+<span class="m">[network] GET /v1/forecast?city=Lisbon</span>
+<span class="m">[network] 200 OK forecast?city=Lisbon (142 ms)</span></code></pre>
+		</figure>
+	</section>
+
+	<section id="limitations" class="container section">
+		<p class="comment">{limits.comment}</p>
+		<h2 class="section__title">{limits.title}</h2>
+		<ul class="pilot-list pilot-list--grid">
+			{
+				limits.items.map((item) => (
+					<li>
+						<Rich text={item} />
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="install" class="ink">
+		<div class="container section contact pilot-install">
+			<div>
+				<p class="comment">{install.comment}</p>
+				<h2 class="contact__title">{install.title}</h2>
+				<p class="contact__text"><Rich text={install.text} /></p>
+				<p class="actions">
+					<a class="button" href={PILOT.repo} target="_blank" rel="noopener">{install.primary}</a>
+				</p>
+			</div>
+			<div>
+				<pre class="pilot-install__code"><code><span class="m">{install.codeComments[0]}</span>
+brew install xcodegen swiftgen swiftlint
+git clone {PILOT.repo}.git
+<span class="m">{install.codeComments[1]}</span>
+cd xcode-pilot/Scripts && ./generateProject.sh
+open ../XcodePilot.xcodeproj</code></pre>
+				<p class="pilot-install__note"><Rich text={install.note} /></p>
+			</div>
+		</div>
+	</section>
+</PilotLayout>

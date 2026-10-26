@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import appIcon from '../../assets/pilot/app-icon.png';
+import { PILOT, PILOT_COPY, PILOT_LANGS, pilotPath, type PilotLang } from '../../data/pilot';
+
+interface Props {
+	lang: PilotLang;
+}
+
+const { lang } = Astro.props;
+const { nav } = PILOT_COPY[lang];
+const home = pilotPath(lang);
+---
+
+<header class="site-header pilot-header">
+	<div class="container site-header__inner">
+		<a class="pilot-logo" href={home}>
+			<Image src={appIcon} alt="" width={36} height={36} densities={[1, 2, 3]} loading="eager" />
+			{PILOT.name}
+		</a>
+		<nav aria-label="Main">
+			<ul class="site-nav">
+				<li class="hide-on-phones"><a href="#tour">{nav.tour}</a></li>
+				<li class="hide-on-phones"><a href="#features">{nav.features}</a></li>
+				<li class="hide-on-phones"><a href="#shortcuts">{nav.shortcuts}</a></li>
+				<li><a href="#install">{nav.install}</a></li>
+				<li class="pilot-langs">
+					{
+						PILOT_LANGS.map((code) => (
+							<a
+								href={pilotPath(code)}
+								hreflang={code}
+								lang={code}
+								aria-label={PILOT_COPY[code].langLabel}
+								aria-current={code === lang ? 'page' : undefined}
+							>
+								{code}
+							</a>
+						))
+					}
+				</li>
+				<li class="hide-on-phones">
+					<a class="button button--small" href={PILOT.repo} target="_blank" rel="noopener">{nav.github} ↗</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>

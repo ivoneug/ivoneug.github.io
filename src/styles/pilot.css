@@ -1,0 +1,558 @@
+/* Xcode Pilot landing (/pilot/). Builds on global.css: same tokens, buttons, sections and bands. */
+
+.pilot {
+	--pilot-red: #e5342b;
+	/* Screenshots are opaque and captured over exactly this colour (the light --surface) */
+	--pilot-desk: #ffffff;
+	--pilot-menubar: rgb(17 19 24 / 0.04);
+	--pilot-menubar-text: #1d1f24;
+	--pilot-highlight: rgb(17 19 24 / 0.1);
+	--pilot-segment: var(--placeholder);
+}
+
+@media (prefers-color-scheme: dark) {
+	.pilot {
+		--pilot-red: #ff453a;
+		/* The dark --surface, the dark screenshots' backdrop */
+		--pilot-desk: #15171d;
+		--pilot-menubar: rgb(255 255 255 / 0.05);
+		--pilot-menubar-text: #e8eaf0;
+		--pilot-highlight: rgb(255 255 255 / 0.16);
+	}
+}
+
+.pilot code {
+	font-family: var(--font-mono);
+	font-size: 0.88em;
+}
+
+.pilot p code,
+.pilot li code {
+	padding: 0.08em 0.32em;
+	border-radius: 4px;
+	background: var(--placeholder);
+	color: var(--text);
+}
+
+/* Header */
+
+.pilot-logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	font-weight: 700;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.pilot-logo img {
+	/* macOS icons carry their own transparent margin */
+	margin: -2px 0 -2px -4px;
+}
+
+.pilot-langs {
+	display: flex;
+	margin-left: 0.25rem;
+	padding-left: 0.5rem;
+	border-left: 1px solid var(--border);
+}
+
+.site-nav .pilot-langs a {
+	padding-inline: 0.4rem;
+	text-transform: uppercase;
+}
+
+/* Hero */
+
+.pilot-hero {
+	padding-block: 4.5rem 5.5rem;
+}
+
+.pilot-hero .hero__title {
+	font-size: clamp(2.125rem, 4.2vw, 3.25rem);
+}
+
+.pilot-facts {
+	margin-top: 1.5rem;
+	color: var(--muted);
+}
+
+/* A slice of the desktop: menu bar on top, the panel hanging under the app's icon. */
+.pilot-demo {
+	margin: 0;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	background: var(--pilot-desk);
+	overflow: hidden;
+}
+
+.pilot-demo__bar {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	gap: 0.75rem;
+	height: 30px;
+	padding-inline: 0.875rem;
+	border-bottom: 1px solid var(--border);
+	background: var(--pilot-menubar);
+	color: var(--pilot-menubar-text);
+	font-family: -apple-system, BlinkMacSystemFont, var(--font-sans);
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.pilot-demo__menus,
+.pilot-demo__extras {
+	display: flex;
+	align-items: center;
+	gap: 1.1rem;
+	min-width: 0;
+	overflow: hidden;
+}
+
+/* Menus that don't fit wrap onto a hidden second line instead of being cut in half */
+.pilot-demo__menus {
+	flex-wrap: wrap;
+	height: 18px;
+	line-height: 18px;
+	row-gap: 12px;
+}
+
+.pilot-demo__extras {
+	justify-content: flex-end;
+	gap: 0.9rem;
+}
+
+.pilot-demo__extras svg {
+	flex: none;
+	fill: currentColor;
+}
+
+.pilot-demo__item {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	height: 24px;
+	padding-inline: 7px;
+	border-radius: 6px;
+	background: var(--pilot-highlight);
+}
+
+.pilot-demo__icon,
+.pilot-demo__icon img {
+	display: block;
+}
+
+.pilot-demo__icon {
+	display: none;
+}
+
+.pilot-demo[data-state='idle'] .pilot-demo__icon--idle,
+.pilot-demo[data-state='building'] .pilot-demo__icon--building,
+.pilot-demo[data-state='failed'] .pilot-demo__icon--failed,
+.pilot-demo[data-state='succeeded'] .pilot-demo__icon--succeeded,
+.pilot-demo[data-state='running'] .pilot-demo__icon--running {
+	display: block;
+}
+
+.pilot-demo__title,
+.pilot-chip__title {
+	font-size: 11px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+}
+
+.pilot-demo__title:empty {
+	display: none;
+}
+
+.pilot-demo[data-state='failed'] .pilot-demo__title,
+.pilot-chip__title--alert {
+	color: var(--pilot-red);
+}
+
+/* Each screenshot starts at the tip of the panel's arrow and keeps the shadow around it,
+   so it simply hangs under the menu bar. */
+.pilot-demo__panel {
+	display: grid;
+	width: min(100%, 40rem);
+	margin: 1px auto 0;
+}
+
+.pilot-demo__shot {
+	grid-area: 1 / 1;
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+
+.pilot-demo__shot img,
+.pilot-tour__shot img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.pilot-demo[data-shot='issues'] .pilot-demo__shot--issues,
+.pilot-demo[data-shot='log'] .pilot-demo__shot--log,
+.pilot-demo[data-shot='console'] .pilot-demo__shot--console {
+	opacity: 1;
+}
+
+@media (max-width: 40rem) {
+	.pilot-demo__menus span,
+	.pilot-demo__extras svg {
+		display: none;
+	}
+
+	.pilot-header .site-nav .button {
+		display: none;
+	}
+}
+
+/* Tour: a segmented control like the panel's own, made of radio buttons so it works without JS. */
+.pilot-tour__radio {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.pilot-tour__tabs {
+	display: inline-flex;
+	gap: 2px;
+	margin-bottom: 2.5rem;
+	padding: 3px;
+	border-radius: 10px;
+	background: var(--pilot-segment);
+	font-family: var(--font-mono);
+	font-size: 0.9375rem;
+}
+
+.pilot-tour__tabs label {
+	padding: 0.5rem 1.15rem;
+	border-radius: 8px;
+	color: var(--muted);
+	cursor: pointer;
+}
+
+.pilot-tour__tabs label:hover {
+	color: var(--text);
+}
+
+#pilot-tour-issues:checked ~ .pilot-tour__tabs [for='pilot-tour-issues'],
+#pilot-tour-log:checked ~ .pilot-tour__tabs [for='pilot-tour-log'],
+#pilot-tour-console:checked ~ .pilot-tour__tabs [for='pilot-tour-console'] {
+	background: var(--accent);
+	color: var(--accent-contrast);
+}
+
+#pilot-tour-issues:focus-visible ~ .pilot-tour__tabs [for='pilot-tour-issues'],
+#pilot-tour-log:focus-visible ~ .pilot-tour__tabs [for='pilot-tour-log'],
+#pilot-tour-console:focus-visible ~ .pilot-tour__tabs [for='pilot-tour-console'] {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.pilot-tour__pane {
+	display: none;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+	gap: 2rem 3.5rem;
+	align-items: center;
+}
+
+#pilot-tour-issues:checked ~ .pilot-tour__panes .pilot-tour__pane--issues,
+#pilot-tour-log:checked ~ .pilot-tour__panes .pilot-tour__pane--log,
+#pilot-tour-console:checked ~ .pilot-tour__panes .pilot-tour__pane--console {
+	display: grid;
+}
+
+.pilot-tour__text {
+	max-width: 30rem;
+}
+
+.pilot-tour__text p {
+	margin: 0;
+	color: var(--text-body);
+	font-size: 1.125rem;
+}
+
+.pilot-tour__text .steps__count {
+	color: var(--accent);
+	font-size: 0.8125rem;
+}
+
+.pilot-tour__title {
+	margin: 0.625rem 0 1rem;
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	line-height: 1.15;
+	font-weight: 700;
+}
+
+/* The panel hangs from its menu bar icon here too. */
+.pilot-tour__figure {
+	display: grid;
+	justify-items: center;
+	width: min(100%, 38rem);
+	margin: 0;
+	justify-self: center;
+}
+
+.pilot-tour__shot {
+	display: block;
+	width: 100%;
+	margin-top: 1px;
+}
+
+/* Menu bar states */
+
+.pilot-states {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pilot-states__item {
+	padding: 1.5rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+}
+
+.pilot-states__item p {
+	margin: 0;
+	color: var(--text-body);
+}
+
+.pilot-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	height: 30px;
+	padding-inline: 10px;
+	border-radius: 7px;
+	background: var(--pilot-desk);
+	box-shadow: inset 0 0 0 1px var(--border);
+	color: var(--pilot-menubar-text);
+	font-family: -apple-system, BlinkMacSystemFont, var(--font-sans);
+}
+
+.pilot-chip img {
+	display: block;
+}
+
+.pilot-chip__title {
+	font-size: 12px;
+}
+
+/* Shortcuts */
+
+.pilot-keys {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+	gap: 2rem 3.5rem;
+}
+
+.pilot-keys__group {
+	margin: 0 0 0.5rem;
+	color: var(--muted);
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: 0;
+}
+
+.pilot-keys__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--border);
+}
+
+.pilot-keys__list li {
+	display: grid;
+	grid-template-columns: 9.5rem 1fr;
+	align-items: center;
+	gap: 1.25rem;
+	padding-block: 0.875rem;
+	border-bottom: 1px solid var(--border);
+	color: var(--text-body);
+}
+
+.pilot-keys__combo {
+	display: inline-flex;
+	gap: 0.3rem;
+}
+
+.pilot kbd {
+	display: inline-grid;
+	place-items: center;
+	min-width: 2rem;
+	height: 2rem;
+	padding-inline: 0.45rem;
+	border: 1px solid var(--border-strong);
+	border-bottom-width: 2px;
+	border-radius: 7px;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-mono);
+	font-size: 0.9375rem;
+	line-height: 1;
+}
+
+/* Under the hood */
+
+.pilot-hood {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+	gap: 2.5rem 3.5rem;
+	align-items: center;
+}
+
+.pilot-hood > * {
+	min-width: 0;
+}
+
+.pilot-hood .section__title {
+	margin-bottom: 1.5rem;
+}
+
+.pilot-hood__text {
+	margin: 0;
+	color: var(--text-body);
+	font-size: 1.125rem;
+}
+
+.pilot-hood__subtitle {
+	margin: 2rem 0 0.5rem;
+	color: var(--muted);
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: 0;
+}
+
+.pilot-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pilot-list li {
+	position: relative;
+	padding: 0.625rem 0 0.625rem 1.5rem;
+	color: var(--text-body);
+}
+
+.pilot-list li::before {
+	content: '—';
+	position: absolute;
+	left: 0;
+	color: var(--muted);
+	font-family: var(--font-mono);
+}
+
+.pilot-list .accent {
+	color: var(--text);
+	font-weight: 600;
+}
+
+.pilot-list--grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+	gap: 0.5rem 3.5rem;
+}
+
+/* Terminal card: same look as the editor card on the home page. */
+.pilot-term {
+	margin: 0;
+	min-width: 0;
+	border: 1px solid var(--code-border);
+	border-radius: 14px;
+	background: var(--code-bg);
+	color: var(--code-text);
+	overflow: hidden;
+}
+
+.pilot-term__bar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--code-border);
+	background: var(--code-bar);
+}
+
+.pilot-term__bar > span:not(.pilot-term__file) {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #3a3f4c;
+}
+
+.pilot-term__file {
+	margin-left: 12px;
+	color: var(--code-muted);
+	font-family: var(--font-mono);
+	font-size: 13px;
+}
+
+.pilot-term__code,
+.pilot-install__code {
+	margin: 0;
+	padding: 20px;
+	overflow-x: auto;
+	font-family: var(--font-mono);
+	font-size: 13px;
+	line-height: 1.75;
+}
+
+.pilot-term .p,
+.pilot-term .m,
+.pilot-install__code .m {
+	color: var(--code-muted);
+}
+
+.pilot-term .c {
+	color: #5dd8ff;
+}
+
+/* Install band */
+
+.pilot-install {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+	gap: 2.5rem 3.5rem;
+	align-items: center;
+}
+
+.pilot-install > * {
+	min-width: 0;
+}
+
+.pilot .pilot-install code {
+	background: var(--ink-raised);
+	color: var(--ink-text);
+}
+
+.pilot-install__code {
+	border: 1px solid var(--ink-border);
+	border-radius: 12px;
+	background: var(--ink-raised);
+	color: var(--ink-text);
+}
+
+.pilot-install__note {
+	margin: 1.25rem 0 0;
+	color: #b9bec9;
+	font-family: var(--font-sans);
+	font-size: 0.9375rem;
+}
+
+@media (max-width: 40rem) {
+	.pilot-term__code,
+	.pilot-install__code {
+		padding: 16px;
+		font-size: 12px;
+	}
+}

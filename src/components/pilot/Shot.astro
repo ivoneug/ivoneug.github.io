@@ -1,0 +1,41 @@
+---
+// A panel screenshot that follows the colour scheme. Captured opaque on a Retina screen over the colour of the
+// surface it sits on (#ffffff in light mode, #15171d in dark mode) and stored as lossless WebP in public/pilot/shots/:
+// lossy encoding shifts that background by a few levels and the edge of the picture shows.
+import { existsSync } from 'node:fs';
+import type { PilotLang, PilotShot } from '../../data/pilot';
+
+interface Props {
+	shot: PilotShot;
+	lang: PilotLang;
+	alt: string;
+	sizes: string;
+	class?: string;
+	loading?: 'eager' | 'lazy';
+}
+
+const { shot, lang, alt, sizes, class: className, loading = 'lazy' } = Astro.props;
+const srcset = (look: 'light' | 'dark') => {
+	const name = `/pilot/shots/${shot}-${look}-${lang}`;
+	if (!existsSync(`public${name}.webp`) || !existsSync(`public${name}-646.webp`)) {
+		throw new Error(`Missing screenshot ${name}.webp or ${name}-646.webp`);
+	}
+	return `${name}-646.webp 646w, ${name}.webp 1292w`;
+};
+const light = srcset('light');
+const dark = srcset('dark');
+---
+
+<picture class={className}>
+	<source media="(prefers-color-scheme: dark)" srcset={dark} sizes={sizes} type="image/webp" />
+	<img
+		src={`/pilot/shots/${shot}-light-${lang}-646.webp`}
+		srcset={light}
+		sizes={sizes}
+		alt={alt}
+		width="646"
+		height="668"
+		loading={loading}
+		decoding="async"
+	/>
+</picture>

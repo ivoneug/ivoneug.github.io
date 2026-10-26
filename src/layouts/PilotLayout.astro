@@ -1,0 +1,44 @@
+---
+// Layout of the Xcode Pilot landing: its own header, icon and preview image on top of the site's head and styles.
+import { getImage } from 'astro:assets';
+import appIcon from '../assets/pilot/app-icon.png';
+import BaseHead from '../components/BaseHead.astro';
+import PilotFooter from '../components/pilot/PilotFooter.astro';
+import PilotHeader from '../components/pilot/PilotHeader.astro';
+import { PILOT_COPY, PILOT_LANGS, pilotPath, type PilotLang } from '../data/pilot';
+import '../styles/pilot.css';
+
+interface Props {
+	lang: PilotLang;
+}
+
+const { lang } = Astro.props;
+const { meta, skip } = PILOT_COPY[lang];
+const icon = await getImage({ src: appIcon, width: 180, format: 'png' });
+const alternates = [
+	...PILOT_LANGS.map((code) => ({ lang: code, href: pilotPath(code) })),
+	{ lang: 'x-default', href: pilotPath('en') },
+];
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<BaseHead
+			fullTitle={meta.title}
+			description={meta.description}
+			locale={meta.locale}
+			icon={icon.src}
+			image={`/pilot/og-${lang}.png`}
+			alternates={alternates}
+		/>
+	</head>
+	<body class="pilot">
+		<a class="skip-link" href="#main">{skip}</a>
+		<PilotHeader lang={lang} />
+		<main id="main">
+			<slot />
+		</main>
+		<PilotFooter lang={lang} />
+	</body>
+</html>

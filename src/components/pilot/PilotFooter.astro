@@ -1,0 +1,25 @@
+---
+import { PILOT, PILOT_COPY, type PilotLang } from '../../data/pilot';
+import { SITE } from '../../data/site';
+
+interface Props {
+	lang: PilotLang;
+}
+
+const { lang } = Astro.props;
+const { footer } = PILOT_COPY[lang];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__inner">
+		<span>© {year} {SITE.name}</span>
+		<span class="site-footer__links">
+			<span>{footer.author} <a href="/">ivon.dev</a></span>
+			<span aria-hidden="true">·</span>
+			<a href={PILOT.license} target="_blank" rel="noopener">{footer.license}</a>
+			<span aria-hidden="true">·</span>
+			<a href={PILOT.repo} target="_blank" rel="noopener">{footer.source}</a>
+		</span>
+	</div>
+</footer>

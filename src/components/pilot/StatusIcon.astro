@@ -1,0 +1,21 @@
+---
+// The app's menu bar icon in one state, drawn by its own StatusIconRenderer (18pt, light and dark variants).
+import { getImage } from 'astro:assets';
+import type { PilotState } from '../../data/pilot';
+
+interface Props {
+	state: PilotState;
+	class?: string;
+}
+
+const { state, class: className } = Astro.props;
+const files = import.meta.glob<{ default: ImageMetadata }>('../../assets/pilot/status/*.png', { eager: true });
+const load = (look: 'light' | 'dark') =>
+	getImage({ src: files[`../../assets/pilot/status/${state}-${look}.png`].default, densities: [1, 2, 3], width: 18, format: 'png' });
+const [light, dark] = await Promise.all([load('light'), load('dark')]);
+---
+
+<picture class={className}>
+	<source media="(prefers-color-scheme: dark)" srcset={dark.srcSet.attribute} />
+	<img src={light.src} srcset={light.srcSet.attribute} alt="" width="18" height="18" />
+</picture>
