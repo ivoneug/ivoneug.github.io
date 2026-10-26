@@ -10,6 +10,8 @@ import quickFlashcardsIcon from '../assets/projects/quick-flashcards-icon.png';
 import shortStoriesIcon from '../assets/projects/short-stories-icon.png';
 import triviaQuizIcon from '../assets/projects/trivia-quiz-icon.png';
 import wordMatchIcon from '../assets/projects/word-match-icon.png';
+import xcodePilotIcon from '../assets/projects/xcode-pilot-icon.png';
+import { PILOT } from './pilot';
 
 export const HERO = {
 	comment: "// Hi, I'm Evgeniy Ivon",
@@ -58,8 +60,16 @@ const appStore = (id: string) => ({ platform: 'iOS', href: `https://apps.apple.c
 const googlePlay = (pkg: string) => ({ platform: 'Android', href: `https://play.google.com/store/apps/details?id=${pkg}` });
 
 // Shown newest year first (see index.astro); same-year apps keep this order.
-// `stores` lists only the stores where the app is live right now; `site` links the title.
+// `stores` lists only where the app is live right now (a store, or the source for open-source apps); `site` links the title.
 export const PROJECTS = [
+	{
+		year: '2026',
+		title: 'Xcode Pilot',
+		icon: xcodePilotIcon,
+		about: 'macOS menu bar app that builds and runs Xcode projects without Xcode',
+		site: 'https://pilot.ivon.dev/',
+		stores: [{ platform: 'macOS', href: PILOT.repo }],
+	},
 	{
 		year: '2022',
 		title: 'Lucky Dice 2',
